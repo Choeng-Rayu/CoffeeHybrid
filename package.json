@@ -7,11 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "cd Backend && npm run dev",
+    "bot": "cd Bot && npm run start"
   },
   "dependencies": {
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "axios": "^1.6.0",
+    "react-router-dom": "^6.20.0",
+    "react-qr-code": "^2.0.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

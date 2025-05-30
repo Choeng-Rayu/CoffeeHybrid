@@ -1,0 +1,141 @@
+.productCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: fit-content;
+}
+
+.productCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.productImage {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.productImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholderImage {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categoryIcon {
+  font-size: 4rem;
+  opacity: 0.7;
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(44, 24, 16, 0.9);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.productInfo {
+  padding: 1.5rem;
+}
+
+.productName {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2c1810;
+  margin-bottom: 0.5rem;
+}
+
+.productDescription {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.productDetails {
+  margin-bottom: 1.5rem;
+}
+
+.priceInfo {
+  margin-bottom: 0.75rem;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #d4a574;
+}
+
+.sizesInfo,
+.addOnsInfo {
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.sizesLabel,
+.addOnsLabel {
+  color: #666;
+  font-weight: 500;
+}
+
+.sizes {
+  color: #333;
+  text-transform: capitalize;
+}
+
+.addOnsLabel {
+  color: #d4a574;
+  font-style: italic;
+}
+
+.customizeBtn {
+  width: 100%;
+  background-color: #2c1810;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.customizeBtn:hover {
+  background-color: #3d2318;
+}
+
+@media (max-width: 768px) {
+  .productImage {
+    height: 150px;
+  }
+  
+  .productInfo {
+    padding: 1rem;
+  }
+  
+  .productName {
+    font-size: 1.1rem;
+  }
+  
+  .productDescription {
+    font-size: 0.85rem;
+  }
+}
