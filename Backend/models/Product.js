@@ -49,6 +49,23 @@ const productSchema = new mongoose.Schema({
   available: {
     type: Boolean,
     default: true
+  },
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  shopName: {
+    type: String,
+    required: true
+  },
+  preparationTime: {
+    type: Number,
+    default: 5 // minutes
+  },
+  featured: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

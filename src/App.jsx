@@ -11,6 +11,8 @@ import Menu from './Components/Pages/Menu/Menu';
 import Cart from './Components/Pages/Cart/Cart';
 import OrderHistory from './Components/Pages/OrderHistory/OrderHistory';
 import QRVerification from './Components/Pages/QRVerification/QRVerification';
+import AdminLogin from './Components/Admin/AdminLogin/AdminLogin';
+import AdminDashboard from './Components/Admin/AdminDashboard/AdminDashboard';
 
 // Context for user authentication
 import { UserProvider } from './context/UserContext';
@@ -32,6 +34,8 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/verify" element={<QRVerification />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
               </Routes>
             </main>
           </div>

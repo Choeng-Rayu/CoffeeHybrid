@@ -41,6 +41,15 @@ const userSchema = new mongoose.Schema({
   loyaltyPoints: {
     type: Number,
     default: 0
+  },
+  role: {
+    type: String,
+    enum: ['customer', 'seller', 'admin'],
+    default: 'customer'
+  },
+  shopName: {
+    type: String,
+    sparse: true // Only for sellers
   }
 }, {
   timestamps: true

@@ -27,17 +27,28 @@ const Navbar = () => {
 
           {isAuthenticated ? (
             <>
-              <Link to="/cart" className={styles.navLink}>
-                Cart ({getCartItemCount()})
-              </Link>
-              <Link to="/orders" className={styles.navLink}>
-                Orders
-              </Link>
+              {(user.role === 'seller' || user.role === 'admin') ? (
+                <Link to="/admin/dashboard" className={styles.navLink}>
+                  Seller Dashboard
+                </Link>
+              ) : (
+                <>
+                  <Link to="/cart" className={styles.navLink}>
+                    Cart ({getCartItemCount()})
+                  </Link>
+                  <Link to="/orders" className={styles.navLink}>
+                    Orders
+                  </Link>
+                </>
+              )}
               <div className={styles.userMenu}>
                 <span className={styles.username}>
                   Hello, {user.username}
+                  {(user.role === 'seller' || user.role === 'admin') && (
+                    <span className={styles.roleTag}>({user.role})</span>
+                  )}
                 </span>
-                <button 
+                <button
                   onClick={handleLogout}
                   className={styles.logoutBtn}
                 >
@@ -52,6 +63,9 @@ const Navbar = () => {
               </Link>
               <Link to="/register" className={styles.navLink}>
                 Register
+              </Link>
+              <Link to="/admin/login" className={styles.sellerLink}>
+                Seller Portal
               </Link>
             </div>
           )}

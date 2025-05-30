@@ -81,6 +81,46 @@ export const ordersAPI = {
   }
 };
 
+// Admin/Seller API calls
+export const adminAPI = {
+  registerSeller: async (sellerData) => {
+    const response = await api.post('/admin/register-seller', sellerData);
+    return response.data;
+  },
+
+  addProduct: async (productData) => {
+    const response = await api.post('/admin/products', productData);
+    return response.data;
+  },
+
+  getSellerProducts: async (sellerId) => {
+    const response = await api.get(`/admin/products/${sellerId}`);
+    return response.data;
+  },
+
+  updateProduct: async (productId, productData) => {
+    const response = await api.put(`/admin/products/${productId}`, productData);
+    return response.data;
+  },
+
+  deleteProduct: async (productId, userId) => {
+    const response = await api.delete(`/admin/products/${productId}`, {
+      data: { userId }
+    });
+    return response.data;
+  },
+
+  getSellerOrders: async (sellerId, params = {}) => {
+    const response = await api.get(`/admin/orders/${sellerId}`, { params });
+    return response.data;
+  },
+
+  getDashboardStats: async (sellerId) => {
+    const response = await api.get(`/admin/dashboard/${sellerId}`);
+    return response.data;
+  }
+};
+
 // Health check
 export const healthCheck = async () => {
   const response = await api.get('/health');

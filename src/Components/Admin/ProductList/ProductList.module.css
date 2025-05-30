@@ -1,0 +1,272 @@
+.productList {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h3 {
+  color: #2c1810;
+  margin: 0;
+}
+
+.editHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #ddd;
+}
+
+.editHeader h3 {
+  color: #2c1810;
+  margin: 0;
+}
+
+.cancelBtn {
+  background-color: #6c757d;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancelBtn:hover {
+  background-color: #5a6268;
+}
+
+.error {
+  background-color: #fee;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #fcc;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.emptyState h4 {
+  color: #2c1810;
+  margin-bottom: 1rem;
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.productCard {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.productCard:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.productHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.productName {
+  color: #2c1810;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.productStatus {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-end;
+}
+
+.statusBadge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.statusBadge.available {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.statusBadge.unavailable {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.featuredBadge {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.productInfo {
+  margin-bottom: 1.5rem;
+}
+
+.description {
+  color: #666;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.detail {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.detail strong {
+  color: #333;
+}
+
+.sizes,
+.addOns {
+  margin-bottom: 1rem;
+}
+
+.sizes strong,
+.addOns strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.sizeList,
+.addOnList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sizeItem,
+.addOnItem {
+  background-color: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #555;
+  border: 1px solid #e9ecef;
+}
+
+.productActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.editBtn,
+.toggleBtn,
+.deleteBtn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.editBtn {
+  background-color: #007bff;
+  color: white;
+}
+
+.editBtn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.toggleBtn.enable {
+  background-color: #28a745;
+  color: white;
+}
+
+.toggleBtn.enable:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.toggleBtn.disable {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.toggleBtn.disable:hover:not(:disabled) {
+  background-color: #e0a800;
+}
+
+.deleteBtn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.deleteBtn:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.editBtn:disabled,
+.toggleBtn:disabled,
+.deleteBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .productsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .productHeader {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .productStatus {
+    align-items: flex-start;
+  }
+  
+  .productActions {
+    justify-content: stretch;
+  }
+  
+  .editBtn,
+  .toggleBtn,
+  .deleteBtn {
+    flex: 1;
+  }
+}

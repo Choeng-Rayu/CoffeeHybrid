@@ -54,7 +54,7 @@ Example: `mongodb+srv://coffee-admin:yourpassword@cluster0.xxxxx.mongodb.net/cof
 Add these environment variables:
 ```env
 PORT=10000
-MONGODB_URI=mongodb+srv://coffee-admin:yourpassword@cluster0.xxxxx.mongodb.net/coffee-ordering?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://ChoengRayu:C9r6nhxOVLCUkkGd@cluster0.2ott03t.mongodb.net/coffee-ordering?retryWrites=true&w=majority&appName=Cluster0
 NODE_ENV=production
 ```
 
@@ -108,9 +108,9 @@ VITE_API_URL=https://coffeehybrid-backend.onrender.com/api
 
 ### 3. Environment Variables
 ```env
-BOT_TOKEN=your_telegram_bot_token_here
+BOT_TOKEN=8144687170:AAHU7AO6HlZzOjupizuS5Ry4GBJtj_8lDjg
 API_BASE_URL=https://coffeehybrid-backend.onrender.com/api
-WEBHOOK_URL=https://coffeehybrid-bot.onrender.com/webhook
+WEBHOOK_URL=https://alarmbot-d1r4.onrender.com/webhook
 PORT=10000
 NODE_ENV=production
 ```
@@ -118,9 +118,9 @@ NODE_ENV=production
 ### 4. Set Webhook
 After deployment, set the webhook:
 ```bash
-curl -X POST "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook" \
+curl -X POST "https://api.telegram.org/bot8144687170:AAHU7AO6HlZzOjupizuS5Ry4GBJtj_8lDjg/setWebhook" \
      -H "Content-Type: application/json" \
-     -d '{"url": "https://coffeehybrid-bot.onrender.com/webhook"}'
+     -d '{"url": "https://alarmbot-d1r4.onrender.com/webhook"}'
 ```
 
 ## 🔧 Post-Deployment Configuration

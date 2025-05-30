@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoffeeHybrid API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #2c1810;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #3d2318;
+        }
+        .result {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ CoffeeHybrid API Test</h1>
+        
+        <h2>API Health Check</h2>
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        
+        <h2>Initialize Menu</h2>
+        <button onclick="initializeMenu()">Initialize Menu Data</button>
+        
+        <h2>Get Menu</h2>
+        <button onclick="getMenu()">Get All Menu Items</button>
+        <button onclick="getMenu('hot')">Get Hot Coffee</button>
+        <button onclick="getMenu('iced')">Get Iced Coffee</button>
+        <button onclick="getMenu('frappe')">Get Frappes</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        
+        function showResult(data, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = JSON.stringify(data, null, 2);
+            resultDiv.className = `result ${isError ? 'error' : 'success'}`;
+        }
+        
+        async function testHealth() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                showResult(data);
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        }
+        
+        async function initializeMenu() {
+            try {
+                const response = await fetch(`${API_BASE}/menu/initialize`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                showResult(data);
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        }
+        
+        async function getMenu(category = null) {
+            try {
+                const url = category ? 
+                    `${API_BASE}/menu/category/${category}` : 
+                    `${API_BASE}/menu`;
+                    
+                const response = await fetch(url);
+                const data = await response.json();
+                showResult(data);
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        }
+        
+        // Test health on page load
+        window.onload = () => {
+            testHealth();
+        };
+    </script>
+</body>
+</html>
