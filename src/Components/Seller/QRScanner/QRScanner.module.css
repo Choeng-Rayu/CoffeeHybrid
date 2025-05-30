@@ -1,0 +1,480 @@
+.scannerContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.scannerCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+}
+
+.shopInfo {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.shopName {
+  font-weight: 600;
+  color: #d4a574;
+}
+
+.modeSelection {
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.modeBtn {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.modeBtn:hover {
+  border-color: #d4a574;
+}
+
+.modeBtn.active {
+  border-color: #2c1810;
+  background-color: #2c1810;
+  color: white;
+}
+
+.cameraSection {
+  padding: 2rem;
+}
+
+.cameraStart {
+  text-align: center;
+  padding: 3rem;
+}
+
+.cameraIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.cameraStart h3 {
+  color: #2c1810;
+  margin-bottom: 1rem;
+}
+
+.cameraStart p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.startCameraBtn {
+  background-color: #2c1810;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.startCameraBtn:hover {
+  background-color: #3d2318;
+}
+
+.cameraActive {
+  text-align: center;
+}
+
+.videoContainer {
+  position: relative;
+  display: inline-block;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.video {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  display: block;
+}
+
+.scanOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.scanFrame {
+  width: 200px;
+  height: 200px;
+  border: 3px solid #d4a574;
+  border-radius: 12px;
+  position: relative;
+  animation: pulse 2s infinite;
+}
+
+.scanFrame::before,
+.scanFrame::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #d4a574;
+}
+
+.scanFrame::before {
+  top: -3px;
+  left: -3px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.scanFrame::after {
+  bottom: -3px;
+  right: -3px;
+  border-left: none;
+  border-top: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.scanInstructions {
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.cameraControls {
+  margin-top: 2rem;
+}
+
+.stopCameraBtn {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.stopCameraBtn:hover {
+  background-color: #c82333;
+}
+
+.manualFallback {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.linkBtn {
+  background: none;
+  border: none;
+  color: #d4a574;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.manualSection {
+  padding: 2rem;
+}
+
+.manualForm {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  color: #2c1810;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #d4a574;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+.verifyBtn {
+  flex: 1;
+  background-color: #2c1810;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.verifyBtn:hover:not(:disabled) {
+  background-color: #3d2318;
+}
+
+.verifyBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.resetBtn {
+  background-color: #6c757d;
+  color: white;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.resetBtn:hover {
+  background-color: #5a6268;
+}
+
+.errorResult,
+.successResult {
+  margin: 2rem;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.errorResult {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.successResult {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.resultIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.errorResult h3,
+.successResult h3 {
+  margin-bottom: 1rem;
+}
+
+.dismissBtn {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.orderDetails {
+  text-align: left;
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.customerInfo,
+.orderItems {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #c3e6cb;
+}
+
+.customerInfo h4,
+.orderItems h4 {
+  color: #2c1810;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #d4a574;
+  padding-bottom: 0.5rem;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.infoRow .label {
+  font-weight: 600;
+  color: #666;
+}
+
+.infoRow .value {
+  font-weight: 500;
+  color: #2c1810;
+}
+
+.orderItem {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.itemName {
+  font-weight: 600;
+  color: #2c1810;
+  margin-bottom: 0.25rem;
+}
+
+.itemDetails {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.addOns {
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.successActions {
+  margin-top: 2rem;
+}
+
+.newOrderBtn {
+  background-color: #28a745;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.newOrderBtn:hover {
+  background-color: #218838;
+}
+
+.instructions {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.instructions h4 {
+  color: #2c1810;
+  margin-bottom: 1rem;
+}
+
+.instructions ul {
+  list-style: none;
+  padding: 0;
+}
+
+.instructions li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.instructions li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #28a745;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .scannerContainer {
+    padding: 0.5rem;
+  }
+  
+  .header {
+    padding: 1.5rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .modeSelection {
+    flex-direction: column;
+  }
+  
+  .orderDetails {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+  }
+}

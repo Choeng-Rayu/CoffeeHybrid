@@ -11,6 +11,7 @@ import Menu from './Components/Pages/Menu/Menu';
 import Cart from './Components/Pages/Cart/Cart';
 import OrderHistory from './Components/Pages/OrderHistory/OrderHistory';
 import QRVerification from './Components/Pages/QRVerification/QRVerification';
+import StaffQRScanner from './Components/Pages/StaffQRScanner/StaffQRScanner';
 import AdminLogin from './Components/Admin/AdminLogin/AdminLogin';
 import AdminDashboard from './Components/Admin/AdminDashboard/AdminDashboard';
 
@@ -34,6 +35,7 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/verify" element={<QRVerification />} />
+                <Route path="/staff/scanner" element={<StaffQRScanner />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
               </Routes>

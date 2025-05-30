@@ -4,12 +4,13 @@ import { useUser } from '../../../context/UserContext';
 import { adminAPI } from '../../../services/api';
 import ProductForm from '../ProductForm/ProductForm';
 import ProductList from '../ProductList/ProductList';
+import QRScanner from '../../Seller/QRScanner/QRScanner';
 import styles from './AdminDashboard.module.css';
 
 const AdminDashboard = () => {
   const { user, isAuthenticated } = useUser();
   const navigate = useNavigate();
-  
+
   const [activeTab, setActiveTab] = useState('dashboard');
   const [products, setProducts] = useState([]);
   const [stats, setStats] = useState(null);
@@ -21,7 +22,7 @@ const AdminDashboard = () => {
       navigate('/admin/login');
       return;
     }
-    
+
     fetchDashboardData();
   }, [isAuthenticated, user, navigate]);
 
@@ -94,6 +95,12 @@ const AdminDashboard = () => {
           📊 Dashboard
         </button>
         <button
+          onClick={() => setActiveTab('qr-scanner')}
+          className={`${styles.tab} ${activeTab === 'qr-scanner' ? styles.active : ''}`}
+        >
+          📱 QR Scanner
+        </button>
+        <button
           onClick={() => setActiveTab('products')}
           className={`${styles.tab} ${activeTab === 'products' ? styles.active : ''}`}
         >
@@ -121,19 +128,19 @@ const AdminDashboard = () => {
                 <h3>Total Products</h3>
                 <div className={styles.statNumber}>{stats?.productCount || 0}</div>
               </div>
-              
+
               <div className={styles.statCard}>
                 <h3>Today's Orders</h3>
                 <div className={styles.statNumber}>{stats?.todayOrders || 0}</div>
               </div>
-              
+
               <div className={styles.statCard}>
                 <h3>Total Revenue</h3>
                 <div className={styles.statNumber}>
                   ${stats?.orderStats?.reduce((total, stat) => total + (stat.totalRevenue || 0), 0)?.toFixed(2) || '0.00'}
                 </div>
               </div>
-              
+
               <div className={styles.statCard}>
                 <h3>Completed Orders</h3>
                 <div className={styles.statNumber}>
@@ -145,19 +152,25 @@ const AdminDashboard = () => {
             <div className={styles.quickActions}>
               <h3>Quick Actions</h3>
               <div className={styles.actionButtons}>
-                <button 
+                <button
+                  onClick={() => setActiveTab('qr-scanner')}
+                  className={styles.actionBtn}
+                >
+                  📱 Scan QR Codes
+                </button>
+                <button
                   onClick={() => setActiveTab('add-product')}
                   className={styles.actionBtn}
                 >
                   ➕ Add New Product
                 </button>
-                <button 
+                <button
                   onClick={() => setActiveTab('products')}
                   className={styles.actionBtn}
                 >
                   📝 Manage Products
                 </button>
-                <button 
+                <button
                   onClick={() => setActiveTab('orders')}
                   className={styles.actionBtn}
                 >
@@ -168,15 +181,19 @@ const AdminDashboard = () => {
           </div>
         )}
 
+        {activeTab === 'qr-scanner' && (
+          <QRScanner />
+        )}
+
         {activeTab === 'products' && (
-          <ProductList 
+          <ProductList
             products={products}
             onProductUpdated={handleProductUpdated}
           />
         )}
 
         {activeTab === 'add-product' && (
-          <ProductForm 
+          <ProductForm
             onProductAdded={handleProductAdded}
           />
         )}

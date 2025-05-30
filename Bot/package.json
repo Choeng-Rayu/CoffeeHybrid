@@ -2,11 +2,17 @@
   "name": "coffee-telegram-bot",
   "version": "1.0.0",
   "description": "Coffee Ordering Telegram Bot",
-  "main": "bot.js",
+  "main": "bot-new.js",
   "type": "module",
   "scripts": {
-    "start": "node bot.js",
-    "dev": "node --watch bot.js"
+    "start": "node bot-new.js",
+    "dev": "node --watch bot-new.js",
+    "start:old": "node bot.js",
+    "dev:old": "node --watch bot.js",
+    "webhook:set": "node scripts/setup-webhook.js set",
+    "webhook:delete": "node scripts/setup-webhook.js delete",
+    "webhook:info": "node scripts/setup-webhook.js info",
+    "deploy": "NODE_ENV=production node bot-new.js"
   },
   "dependencies": {
     "telegraf": "^4.15.0",
