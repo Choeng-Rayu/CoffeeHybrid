@@ -134,14 +134,37 @@ router.post('/verify-qr', async (req, res) => {
   try {
     const { qrToken } = req.body;
 
+    console.log('🔍 QR Verification Request:');
+    console.log('   Token received:', qrToken);
+    console.log('   Token type:', typeof qrToken);
+    console.log('   Token length:', qrToken?.length);
+
     const order = await Order.findOne({ qrToken }).populate('userId', 'username email');
-    
+
     if (!order) {
-      return res.status(404).json({ 
+      console.log('❌ Order not found for token:', qrToken);
+
+      // Debug: Check all tokens in database
+      const allOrders = await Order.find({}, 'qrToken status');
+      console.log('📋 All orders in database:');
+      allOrders.forEach((o, index) => {
+        console.log(`   ${index + 1}. Token: "${o.qrToken}" Status: ${o.status}`);
+        if (o.qrToken === qrToken) {
+          console.log('      ✅ EXACT MATCH FOUND!');
+        }
+      });
+
+      return res.status(404).json({
         success: false,
-        error: 'Invalid QR code' 
+        error: 'Invalid QR code'
       });
     }
+
+    console.log('✅ Order found:');
+    console.log('   Order ID:', order._id);
+    console.log('   Status:', order.status);
+    console.log('   Customer:', order.userId?.username);
+    console.log('   Expires:', order.expiresAt);
 
     if (order.status !== 'pending') {
       return res.status(400).json({ 

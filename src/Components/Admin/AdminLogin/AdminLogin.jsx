@@ -30,14 +30,23 @@ const AdminLogin = () => {
 
     try {
       const response = await authAPI.login(formData);
-      
+
+      // Debug logging
+      console.log('Login response:', response);
+      console.log('User role:', response.user?.role);
+      console.log('User shop:', response.user?.shopName);
+
       // Check if user is seller or admin
       if (response.user.role !== 'seller' && response.user.role !== 'admin') {
+        console.log('Access denied - Role check failed');
+        console.log('Expected: seller or admin');
+        console.log('Actual:', response.user.role);
         setError('Access denied. Seller privileges required.');
         setIsLoading(false);
         return;
       }
 
+      console.log('Login successful - redirecting to dashboard');
       login(response.user);
       navigate('/admin/dashboard');
     } catch (error) {

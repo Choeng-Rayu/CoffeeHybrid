@@ -103,6 +103,16 @@ const OrderConfirmation = ({ order, onClose }) => {
             <p className={styles.qrInstructions}>
               Show this QR code to staff when picking up your order
             </p>
+            <div className={styles.tokenDisplay}>
+              <p className={styles.tokenLabel}>QR Token (for manual entry):</p>
+              <code className={styles.tokenCode}>{order.qrToken}</code>
+              <button
+                onClick={() => navigator.clipboard.writeText(order.qrToken)}
+                className={styles.copyBtn}
+              >
+                Copy Token
+              </button>
+            </div>
             {qrBlob && (
               <button onClick={handleDownloadQR} className={styles.downloadBtn}>
                 Download QR Code

@@ -236,18 +236,24 @@ bot.hears(/^Size:\s/, async (ctx) => {
 
 async function showCustomizationOptions(ctx, product) {
   const session = getUserSession(ctx.from.id);
-  
+
+  // Check if product and session are valid
+  if (!product || !product.name || !session.customization) {
+    await ctx.reply('Error: Product information not available. Please select a product again.');
+    return;
+  }
+
   let message = `Customizing: ${product.name}\n\n`;
   message += `Current selection:\n`;
   message += `• Size: ${session.customization.size}\n`;
   message += `• Sugar: ${session.customization.sugarLevel}\n`;
-  
+
   if (product.category === 'iced' || product.category === 'frappe') {
     message += `• Ice: ${session.customization.iceLevel}\n`;
   }
-  
+
   message += `• Quantity: ${session.customization.quantity}\n\n`;
-  
+
   const currentPrice = calculateItemPrice(product, session.customization);
   message += `Current price: ${formatPrice(currentPrice)}\n\n`;
   message += 'What would you like to customize?';
@@ -261,48 +267,7 @@ async function showCustomizationOptions(ctx, product) {
   await ctx.reply(message, Markup.keyboard(buttons).resize());
 }
 
-bot.hears('🍯 Sugar Level', async (ctx) => {
-  const buttons = [
-    ['None', 'Low'],
-    ['Medium', 'High'],
-    ['⬅️ Back to Customization']
-  ];
-
-  await ctx.reply('Choose your sugar level:', Markup.keyboard(buttons).resize());
-});
-
-bot.hears(['None', 'Low', 'Medium', 'High'], async (ctx) => {
-  const session = getUserSession(ctx.from.id);
-  const level = ctx.message.text.toLowerCase();
-  
-  if (session.currentProduct && session.customization) {
-    // Determine if this is for sugar or ice based on context
-    session.customization.sugarLevel = level;
-    await showCustomizationOptions(ctx, session.currentProduct);
-  }
-});
-
-bot.hears('🧊 Ice Level', async (ctx) => {
-  const session = getUserSession(ctx.from.id);
-  
-  if (session.currentProduct && (session.currentProduct.category === 'iced' || session.currentProduct.category === 'frappe')) {
-    const buttons = [
-      ['None', 'Low'],
-      ['Medium', 'High'],
-      ['⬅️ Back to Customization']
-    ];
-
-    await ctx.reply('Choose your ice level:', Markup.keyboard(buttons).resize());
-  } else {
-    await ctx.reply('Ice level is only available for iced drinks and frappes.');
-    await showCustomizationOptions(ctx, session.currentProduct);
-  }
-});
-
-bot.hears('➕ Add-ons', async (ctx) => {
-  const session = getUserSession(ctx.from.id);
-  const product = session.currentProduct;
-  
+async function showAddOnsMenu(ctx, product, session) {
   if (!product.addOns || product.addOns.length === 0) {
     await ctx.reply('No add-ons available for this item.');
     await showCustomizationOptions(ctx, product);
@@ -321,33 +286,106 @@ bot.hears('➕ Add-ons', async (ctx) => {
 
   buttons.push(['⬅️ Back to Customization']);
   await ctx.reply(message, Markup.keyboard(buttons).resize());
+}
+
+bot.hears('🍯 Sugar Level', async (ctx) => {
+  const session = getUserSession(ctx.from.id);
+  session.currentState = 'selecting_sugar'; // Set state for context
+
+  const buttons = [
+    ['None', 'Low'],
+    ['Medium', 'High'],
+    ['⬅️ Back to Customization']
+  ];
+
+  await ctx.reply('Choose your sugar level:', Markup.keyboard(buttons).resize());
+});
+
+bot.hears(['None', 'Low', 'Medium', 'High'], async (ctx) => {
+  const session = getUserSession(ctx.from.id);
+  const level = ctx.message.text.toLowerCase();
+
+  if (session.currentProduct && session.customization) {
+    // Determine if this is for sugar or ice based on current state
+    if (session.currentState === 'selecting_sugar') {
+      session.customization.sugarLevel = level;
+      await ctx.reply(`Sugar level set to: ${level}`);
+    } else if (session.currentState === 'selecting_ice') {
+      session.customization.iceLevel = level;
+      await ctx.reply(`Ice level set to: ${level}`);
+    } else {
+      // Default to sugar if no state is set
+      session.customization.sugarLevel = level;
+      await ctx.reply(`Sugar level set to: ${level}`);
+    }
+
+    // Clear state and return to customization
+    session.currentState = null;
+    await showCustomizationOptions(ctx, session.currentProduct);
+  }
+});
+
+bot.hears('🧊 Ice Level', async (ctx) => {
+  const session = getUserSession(ctx.from.id);
+
+  if (session.currentProduct && (session.currentProduct.category === 'iced' || session.currentProduct.category === 'frappe')) {
+    session.currentState = 'selecting_ice'; // Set state for context
+
+    const buttons = [
+      ['None', 'Low'],
+      ['Medium', 'High'],
+      ['⬅️ Back to Customization']
+    ];
+
+    await ctx.reply('Choose your ice level:', Markup.keyboard(buttons).resize());
+  } else {
+    await ctx.reply('Ice level is only available for iced drinks and frappes.');
+    await showCustomizationOptions(ctx, session.currentProduct);
+  }
+});
+
+bot.hears('➕ Add-ons', async (ctx) => {
+  const session = getUserSession(ctx.from.id);
+  const product = session.currentProduct;
+
+  if (!product) {
+    await ctx.reply('Please select a product first.');
+    return;
+  }
+
+  await showAddOnsMenu(ctx, product, session);
 });
 
 bot.hears(/^[✅➕]\s/, async (ctx) => {
   const session = getUserSession(ctx.from.id);
   const addOnName = ctx.message.text.replace(/^[✅➕]\s/, '');
   const product = session.currentProduct;
-  
-  if (!product || !product.addOns) return;
+
+  if (!product || !product.addOns) {
+    await ctx.reply('Error: Product information not available.');
+    return;
+  }
 
   const addOn = product.addOns.find(a => a.name === addOnName);
-  if (!addOn) return;
+  if (!addOn) {
+    await ctx.reply('Invalid add-on selection.');
+    return;
+  }
 
   const isSelected = session.customization.addOns.some(selected => selected.name === addOn.name);
-  
+
   if (isSelected) {
     // Remove add-on
     session.customization.addOns = session.customization.addOns.filter(selected => selected.name !== addOn.name);
+    await ctx.reply(`Removed: ${addOn.name}`);
   } else {
     // Add add-on
     session.customization.addOns.push(addOn);
+    await ctx.reply(`Added: ${addOn.name} (+${formatPrice(addOn.price)})`);
   }
 
-  // Show updated add-ons menu
-  await ctx.reply('Add-on updated!');
-  setTimeout(() => {
-    bot.hears('➕ Add-ons')(ctx);
-  }, 500);
+  // Show updated add-ons menu immediately (no setTimeout!)
+  await showAddOnsMenu(ctx, product, session);
 });
 
 bot.hears('🔢 Quantity', async (ctx) => {
@@ -543,14 +581,21 @@ bot.hears('📋 My Orders', async (ctx) => {
 
 bot.hears(['🗑️ Clear Cart', '❌ Cancel', '⬅️ Back to Customization', '🏠 Main Menu'], async (ctx) => {
   const session = getUserSession(ctx.from.id);
-  
+
   if (ctx.message.text === '🗑️ Clear Cart') {
     session.cart = [];
     await ctx.reply('Cart cleared!');
   } else if (ctx.message.text === '❌ Cancel') {
     session.currentProduct = null;
     session.customization = {};
+    session.currentState = null; // Clear state
     await ctx.reply('Customization cancelled.');
+  } else if (ctx.message.text === '⬅️ Back to Customization') {
+    session.currentState = null; // Clear state
+    if (session.currentProduct) {
+      await showCustomizationOptions(ctx, session.currentProduct);
+      return;
+    }
   }
 
   // Return to main menu

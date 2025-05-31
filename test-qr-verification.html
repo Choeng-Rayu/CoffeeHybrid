@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test QR Verification</title>
+</head>
+<body>
+    <h1>Test QR Verification API</h1>
+    
+    <div>
+        <label>QR Token:</label>
+        <input type="text" id="qrToken" value="f49a1397-f6fb-4b6b-b274-275396ed6210" style="width: 400px;">
+        <button onclick="testVerification()">Test Verification</button>
+    </div>
+    
+    <div id="result" style="margin-top: 20px;"></div>
+
+    <script>
+        async function testVerification() {
+            const token = document.getElementById('qrToken').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing verification...';
+            
+            try {
+                console.log('Testing token:', token);
+                
+                const response = await fetch('http://localhost:5000/api/orders/verify-qr', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        qrToken: token
+                    })
+                });
+                
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                resultDiv.innerHTML = `
+                    <h3>Response Status: ${response.status}</h3>
+                    <h3>Response Data:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                    
+                    ${data.success ? 
+                        `<div style="color: green; font-weight: bold;">✅ VERIFICATION SUCCESSFUL</div>` : 
+                        `<div style="color: red; font-weight: bold;">❌ VERIFICATION FAILED</div>`
+                    }
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<h3>Error:</h3><pre>${error.message}</pre>`;
+            }
+        }
+    </script>
+</body>
+</html>
