@@ -646,17 +646,26 @@ if (process.env.NODE_ENV === 'production') {
   // Use webhook for production (Render.com)
   const PORT = process.env.PORT || 3000;
   bot.launch({
+
     webhook: {
       domain: process.env.WEBHOOK_URL,
       port: PORT
     }
   });
-} else {
+}else {
   // Use polling for development
-  bot.launch();
+  console.log('Starting bot in polling mode...');
+  bot.launch()
+    .then(() => {
+      console.log(`✅ Bot successfully launched!`);
+      console.log(`🤖 Bot @${bot.botInfo.username} is running...`);
+    })
+    .catch(error => {
+      console.error('❌ Failed to launch bot:', error.message);
+    });
 }
 
-console.log('Coffee Telegram Bot is running...');
+// console.log('Coffee Telegram Bot is running...');
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
