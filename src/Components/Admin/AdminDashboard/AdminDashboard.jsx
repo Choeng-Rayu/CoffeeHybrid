@@ -5,6 +5,7 @@ import { adminAPI } from '../../../services/api';
 import ProductForm from '../ProductForm/ProductForm';
 import ProductList from '../ProductList/ProductList';
 import QRScanner from '../../Seller/QRScanner/QRScanner';
+import SalesAnalytics from '../../Seller/SalesAnalytics/SalesAnalytics';
 import styles from './AdminDashboard.module.css';
 
 const AdminDashboard = () => {
@@ -118,6 +119,12 @@ const AdminDashboard = () => {
         >
           📋 Orders
         </button>
+        <button
+          onClick={() => setActiveTab('analytics')}
+          className={`${styles.tab} ${activeTab === 'analytics' ? styles.active : ''}`}
+        >
+          📊 Sales Analytics
+        </button>
       </div>
 
       <div className={styles.content}>
@@ -176,6 +183,12 @@ const AdminDashboard = () => {
                 >
                   📋 View Orders
                 </button>
+                <button
+                  onClick={() => setActiveTab('analytics')}
+                  className={styles.actionBtn}
+                >
+                  📊 Sales Analytics
+                </button>
               </div>
             </div>
           </div>
@@ -203,6 +216,10 @@ const AdminDashboard = () => {
             <h3>Recent Orders</h3>
             <p>Order management coming soon...</p>
           </div>
+        )}
+
+        {activeTab === 'analytics' && (
+          <SalesAnalytics />
         )}
       </div>
     </div>

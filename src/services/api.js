@@ -118,6 +118,12 @@ export const adminAPI = {
   getDashboardStats: async (sellerId) => {
     const response = await api.get(`/admin/dashboard/${sellerId}`);
     return response.data;
+  },
+
+  // Get comprehensive analytics
+  getAnalytics: async (sellerId, params = {}) => {
+    const response = await api.get(`/admin/analytics/${sellerId}`, { params });
+    return response.data;
   }
 };
 

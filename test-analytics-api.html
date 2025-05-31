@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Analytics API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .controls { margin-bottom: 20px; }
+        .controls select, .controls button { margin: 5px; padding: 8px; }
+        .result { background: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 20px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Test Analytics API</h1>
+        
+        <div class="controls">
+            <label>Seller ID:</label>
+            <input type="text" id="sellerId" placeholder="Enter seller ID" style="width: 300px;">
+            
+            <label>Period:</label>
+            <select id="period">
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month" selected>This Month</option>
+                <option value="year">This Year</option>
+                <option value="all">All Time</option>
+            </select>
+            
+            <button onclick="testAnalytics()">Test Analytics</button>
+            <button onclick="getSellerId()">Get Seller ID</button>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function getSellerId() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Getting seller ID...';
+            
+            try {
+                // Try to login first to get seller ID
+                const loginResponse = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        emailOrUsername: 'coffeeshop1',
+                        password: 'seller123'
+                    })
+                });
+                
+                const loginData = await loginResponse.json();
+                
+                if (loginData.user && loginData.user.id) {
+                    document.getElementById('sellerId').value = loginData.user.id;
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Seller Found</h3>
+                            <p><strong>ID:</strong> ${loginData.user.id}</p>
+                            <p><strong>Username:</strong> ${loginData.user.username}</p>
+                            <p><strong>Shop:</strong> ${loginData.user.shopName}</p>
+                            <p><strong>Role:</strong> ${loginData.user.role}</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ Login Failed</h3>
+                            <pre>${JSON.stringify(loginData, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function testAnalytics() {
+            const sellerId = document.getElementById('sellerId').value;
+            const period = document.getElementById('period').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!sellerId) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Error</h3>
+                        <p>Please enter a seller ID or click "Get Seller ID" first</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultDiv.innerHTML = 'Testing analytics API...';
+            
+            try {
+                const response = await fetch(`http://localhost:5000/api/admin/analytics/${sellerId}?period=${period}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    const analytics = data.analytics;
+                    
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Analytics API Working!</h3>
+                            
+                            <h4>📊 Overview (${period})</h4>
+                            <ul>
+                                <li><strong>Total Orders:</strong> ${analytics.overview.totalOrders}</li>
+                                <li><strong>Total Revenue:</strong> $${(analytics.overview.totalRevenue || 0).toFixed(2)}</li>
+                                <li><strong>Average Order Value:</strong> $${(analytics.overview.averageOrderValue || 0).toFixed(2)}</li>
+                                <li><strong>Items Sold:</strong> ${analytics.overview.totalItemsSold}</li>
+                            </ul>
+                            
+                            <h4>🏆 Top Products</h4>
+                            <ol>
+                                ${analytics.productPerformance.slice(0, 5).map(product => 
+                                    `<li><strong>${product.productName}</strong> - ${product.totalSold} sold, $${product.totalRevenue.toFixed(2)} revenue</li>`
+                                ).join('')}
+                            </ol>
+                            
+                            <h4>📂 Categories</h4>
+                            <ul>
+                                ${analytics.categoryPerformance.map(category => 
+                                    `<li><strong>${category.category}:</strong> ${category.totalSold} sold, $${category.totalRevenue.toFixed(2)} revenue</li>`
+                                ).join('')}
+                            </ul>
+                            
+                            <details>
+                                <summary>📋 Full Response</summary>
+                                <pre>${JSON.stringify(data, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ API Error</h3>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Network Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Auto-load seller ID on page load
+        window.onload = function() {
+            getSellerId();
+        };
+    </script>
+</body>
+</html>
